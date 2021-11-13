@@ -10,7 +10,7 @@ var adminRouter = require('./routes/admin');
 var studentRouter = require('./routes/student');
 var teacherRouter = require('./routes/teacher');
 var headRouter = require('./routes/head');
-const connection = mongoose.connect('mongodb://localhost:27017/lms', { useNewUrlParser: true, useUnifiedTopology: true });
+const connection = mongoose.connect('mongodb://localhost:27017/lms', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false });
 var app = express();
 connection.then((db) => {
     console.log("Connected correctly to server");

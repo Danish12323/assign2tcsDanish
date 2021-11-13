@@ -1,13 +1,12 @@
 var express = require('express');
 var router = express.Router();
-// var Admin = require('../models/admin');
-// var Class = require('../models/class');
-// var Teacher = require('../models/teacher');
-// var Student = require('../models/student');
-
+var Admin = require('../models/admin');
+var Class = require('../models/class');
+var Teacher = require('../models/teacher');
+var Student = require('../models/student');
 /* GET Operations */
 router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
+    res.render('admin',{title:"Admin Dashbaoard"});
 
 });
 router.get('/classes', function(req, res, next) {
@@ -125,8 +124,22 @@ router.put('/class/:cid/teacher/:tid', function(req, res, next) {
         res.json(results);
     });
 });
+
 router.put('/class/:cid', function(req, res, next) {
-    res.send('respond with a resource');
+    
+    Class.findByIdAndUpdate(req.params.cid,req.body,{
+        new:true,
+        runValidators:true
+    },function(err,results){
+        if (err) {
+            return next(error);
+        }
+        // Respond with valid data
+        res.json(results);
+    })
+
+
+
 });
 
 //Delete Operations
