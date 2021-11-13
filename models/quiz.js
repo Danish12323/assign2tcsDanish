@@ -30,6 +30,16 @@ var quizSchema = new Schema({
             
         }]
     }
+,
+startime:{
+    type:String
+},
+endtime:{
+    type:String
+}
+
+
+
 });
 
 
