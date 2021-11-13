@@ -3,7 +3,7 @@ var router = express.Router();
 var Teacher = require('../models/teacher');
 var Material=require('../models/material')
 var Quiz=require('../models/quiz')
-const Quizresponse=require('../models/quizresponse')
+var Assign=require('../models/assign')
 /* GET users listing. */
 
 router.get('/',function(req,res,next){
@@ -116,16 +116,65 @@ router.delete('/quiz/:id', function(req, res, next) {
 
 
 
+router.post('/addassign',function(req,res){
+    Assign.create(req.body)
+    .then((assign) => {
+        console.log('Assignment has been Posted', assign);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(assign);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+    })
 
 
 
 
+    router.delete('/assignment/:id', function(req, res, next) {
+        Assign.deleteOne({ _id: req.params.id }, function(error, results) {
+            if (error) {
+                return next(error);
+            }
+            // Respond with valid data
+            res.json(results);
+        });
+    });
 
 
+// Download Attempted assignMENT
+    router.get('/assign/:id',function(req, res, next) {
+        Assign.findById(req.params.id).sort('title').exec(function(error, results) {
+            
+          if (error) {
+              return next(error);
+          }
+          // Respond with valid data
+          
+          if(results.responses.length>0){
+          return res.json(results);}
+          else{
+              return res.json({msg:"Assignment not attempted yet"})
+          }
+      });
+      
+      
+      })
+    
+    
 
-
-
-
+      router.get('/viewattassign',function(req, res, next) {
+        Assign.find({ 'responses.0' : { '$exists' : true } }).sort('title').exec(function(error, results) {
+            
+          if (error) {
+              return next(error);
+          }
+          // Respond with valid data
+          res.json(results);
+      });
+      
+      
+      })
+    
 
 
 

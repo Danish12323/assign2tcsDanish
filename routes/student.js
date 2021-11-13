@@ -4,7 +4,7 @@ var Teacher = require('../models/teacher');
 var Student=require('../models/student')
 const Material=require('../models/material')
 const Quiz=require('../models/quiz')
-const Quizresponse=require('../models/quizresponse')
+const Assign=require('../models/assign')
 /* GET users listing. */
 
 router.get('/',function(req,res,next){
@@ -65,8 +65,36 @@ router.put('/attemptquiz',function(req, res, next) {
             res.json({msg:"Quiz is attempted and response is saved"});
         });
 });
+router.put('/submitassignment',function(req, res, next) {
+    Assign.findOneAndUpdate({ _id:req.body.assignid}, {
+            "$push": {
+                "responses": {
+                    "sid": req.body.sid,
+                    "response":req.body.response
+                }
+            }
+        }, { new: true, upsert: false },
+        function(error, results) {
+            if (error) {
+                return next(error);
+            }
+            // Respond with valid data
+            res.json({msg:"Assignent is attempted and response is saved"});
+        });
+});
 
 
+router.get('/viewassignment',function(req, res, next) {
+    Assign.find({}).populate('class','-_id -teacher -students').sort('title').exec(function(error, results) {
+      if (error) {
+          return next(error);
+      }
+      // Respond with valid data
+      res.json(results);
+  });
+  
+  
+  })
 
 
 
