@@ -5,6 +5,7 @@ var Student=require('../models/student')
 const Material=require('../models/material')
 const Quiz=require('../models/quiz')
 const Assign=require('../models/assign')
+const Result=require('../models/result')
 /* GET users listing. */
 
 router.get('/',function(req,res,next){
@@ -95,6 +96,33 @@ router.get('/viewassignment',function(req, res, next) {
   
   
   })
+
+
+
+
+  
+
+
+
+  router.get('/result/:subid', function(req, res, next) {
+    Result.find({ subid: req.params.subid }).exec(function(error, results) {
+        if (error) {
+            return next(error);
+        }
+        // Respond with valid data
+        res.json(results);
+    });
+  });
+
+  router.get('/result/', function(req, res, next) {
+    Result.find({ sid: req.body.sid }).exec(function(error, results) {
+        if (error) {
+            return next(error);
+        }
+        // Respond with valid data
+        res.json(results);
+    });
+  });
 
 
 

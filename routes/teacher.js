@@ -4,6 +4,8 @@ var Teacher = require('../models/teacher');
 var Material=require('../models/material')
 var Quiz=require('../models/quiz')
 var Assign=require('../models/assign')
+var Result=require('../models/result')
+
 /* GET users listing. */
 
 router.get('/',function(req,res,next){
@@ -175,11 +177,47 @@ router.post('/addassign',function(req,res){
       
       })
     
+      router.post('/addmarks',function(req,res){
+        Result.create(req.body)
+        .then((quiz) => {
+            console.log('Result has been Posted ', quiz);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(quiz);
+        }, (err) => next(err))
+        .catch((err) => next(err));
+        })
+        
+
+ router.put('/marks/:id', function(req, res, next) {
+    
+            Result.findByIdAndUpdate(req.params.id,req.body,{
+                new:true,
+                runValidators:true
+            },function(err,results){
+                if (err) {
+                    return next(error);
+                }
+                // Respond with valid data
+                res.json(results);
+            })
+        
+        
+        
+        });
+        
 
 
 
-
-
+        router.delete('/marks/:id', function(req, res, next) {
+            Result.deleteOne({ _id: req.params.id }, function(error, results) {
+                if (error) {
+                    return next(error);
+                }
+                // Respond with valid data
+                res.json(results);
+            });
+        });
 
 
 

@@ -4,6 +4,7 @@ var Admin = require('../models/admin');
 var Class = require('../models/class');
 var Teacher = require('../models/teacher');
 var Student = require('../models/student');
+var Subject=require('../models/Subject')
 /* GET Operations */
 router.get('/', function(req, res, next) {
     res.render('admin',{title:"Admin Dashbaoard"});
@@ -170,4 +171,29 @@ router.delete('/delstudent/:id', function(req, res, next) {
         res.json(results);
     });
 });
+
+
+
+
+
+
+router.post('/addsubject', function(req, res, next) {
+    Subject.create(req.body)
+        .then((result) => {
+            console.log('Subject has been Added ', result);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(result);
+        }, (err) => next(err))
+        .catch((err) => next(err));
+});
+
+
+
+
+
+
+
+
+
 module.exports = router;
