@@ -1,6 +1,12 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 var resSchema = new schema({
+    title:{
+type:String
+    },
+    tid:{
+type:mongoose.Types.ObjectId
+    },
     cid: {
         type: mongoose.Types.ObjectId,
         ref: 'Class',

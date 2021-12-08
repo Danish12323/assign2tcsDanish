@@ -10,6 +10,9 @@ router.get('/', function(req, res, next) {
     res.render('admin',{title:"Admin Dashbaoard"});
 
 });
+router.get('/panel',function(req,res,next){
+    res.render('admin',{title:"add data"});
+})
 router.get('/classes', function(req, res, next) {
     Class.find({}).populate('teacher').populate('students.sid').exec(function(error, results) {
         if (error) {
@@ -188,7 +191,17 @@ router.post('/addsubject', function(req, res, next) {
         .catch((err) => next(err));
 });
 
-
+router.post('/adddata',function(req,res,next){
+    var data={name:req.body.name,credithour:req.body.credithour}
+    Subject.create(data)
+    .then((result) => {
+        console.log('Subject has been Added ', result);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(result);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 
 
 
